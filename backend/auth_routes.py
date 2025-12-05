@@ -39,6 +39,7 @@ async def google_login():
     Returns authorization URL for frontend to redirect to
     """
     try:
+        print(f"DEBUG: GOOGLE_REDIRECT_URI = {settings.GOOGLE_REDIRECT_URI}")
         flow = create_oauth_flow()
         
         # Generate CSRF token
@@ -51,6 +52,8 @@ async def google_login():
             state=state,
             prompt='consent'  # Force consent screen to get refresh token
         )
+        
+        print(f"DEBUG: Generated auth URL: {authorization_url}")
         
         return {
             "authorization_url": authorization_url,
