@@ -34,11 +34,9 @@ function Navbar({ user, onSignOut }) {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Features', path: '/report' },
     { name: 'How It Works', path: '/#about' },
     { name: 'Testimonials', path: '/#testimonials' },
     { name: 'FAQ', path: '/#faq' },
-    { name: 'Contact', path: '/#contact' },
     ...(user
       ? [
           { name: 'Dashboard', path: '/dashboard' },

@@ -1,0 +1,37 @@
+2025-12-05 21:42:16,462 - logger_service - INFO - Command - Categorize my inbox: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:42:17,068 - logger_service - ERROR - Gmail API - categorize: Failed for shivamthakurpvt@gmail.com - None
+2025-12-05 21:42:17,072 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 21:42:37,939 - logger_service - INFO - Gmail API - categorize: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:42:37,939 - logger_service - ERROR - AI Service - categorize_emails: Failed - None
+2025-12-05 21:42:38,618 - logger_service - INFO - AI Service - categorize_emails: Success
+2025-12-05 21:43:33,273 - logger_service - INFO - Command - give me today digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:43:33,898 - logger_service - ERROR - Command - daily_digest: Failed for shivamthakurpvt@gmail.com - None
+2025-12-05 21:43:33,900 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 21:43:59,456 - logger_service - ERROR - AI Service - daily_digest: Failed - None
+2025-12-05 21:43:59,676 - logger_service - INFO - AI Service - daily_digest: Success
+2025-12-05 21:43:59,676 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:48:38,897 - logger_service - INFO - Command - today digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:48:39,096 - logger_service - ERROR - Command - daily_digest: Failed for shivamthakurpvt@gmail.com - None
+2025-12-05 21:48:39,099 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 21:48:54,737 - logger_service - ERROR - AI Service - daily_digest: Failed - None
+2025-12-05 21:48:54,941 - logger_service - INFO - AI Service - daily_digest: Success
+2025-12-05 21:48:54,941 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:49:06,818 - logger_service - INFO - Command - today digets: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:49:14,627 - logger_service - INFO - Command - today digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:49:14,809 - logger_service - ERROR - Command - daily_digest: Failed for shivamthakurpvt@gmail.com - None
+2025-12-05 21:49:14,811 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 21:49:30,676 - logger_service - ERROR - AI Service - daily_digest: Failed - None
+2025-12-05 21:49:30,883 - logger_service - INFO - AI Service - daily_digest: Success
+2025-12-05 21:49:30,884 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:52:03,377 - logger_service - INFO - Command - today digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:52:03,937 - logger_service - ERROR - Command - daily_digest: Failed for shivamthakurpvt@gmail.com - None
+2025-12-05 21:52:03,941 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 21:52:19,753 - logger_service - ERROR - AI Service - daily_digest: Failed - None
+2025-12-05 21:52:20,046 - logger_service - INFO - AI Service - daily_digest: Success
+2025-12-05 21:52:20,046 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:57:36,868 - logger_service - INFO - Command - digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 21:57:37,390 - logger_service - ERROR - Command - daily_digest: Failed for shivamthakurpvt@gmail.com - None
+2025-12-05 21:57:37,393 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 21:57:52,944 - logger_service - ERROR - AI Service - daily_digest: Failed - None
+2025-12-05 21:57:52,944 - logger_service - INFO - AI Service - daily_digest: Success
+2025-12-05 21:57:52,944 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com

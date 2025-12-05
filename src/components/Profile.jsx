@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaUser, FaEnvelope, FaBriefcase, FaGraduationCap, FaUsers, FaCalendarAlt, FaEdit } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaRobot, FaEnvelopeOpen, FaChartLine, FaEdit } from 'react-icons/fa';
 
 function Profile({ user }) {
     if (!user) {
@@ -15,7 +15,7 @@ function Profile({ user }) {
                     >
                         <h2 className="text-4xl font-bold text-heading mb-4">Please Sign In</h2>
                         <p className="text-body mb-8">
-                            Sign in to view your personalized profile and dashboard.
+                            Sign in to access your email assistant profile
                         </p>
                         <motion.button
                             whileHover={{ scale: 1.05 }}
@@ -75,7 +75,7 @@ function Profile({ user }) {
                             Welcome back, {user.name}!
                         </h2>
                         <p className="text-body">
-                            Manage your profile and track your professional journey
+                            Your AI Email Assistant Dashboard
                         </p>
                     </motion.div>
 
@@ -88,7 +88,7 @@ function Profile({ user }) {
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="bg-white rounded-2xl shadow-xl p-8"
                         >
-                            <h3 className="text-2xl font-bold text-heading mb-6">Personal Information</h3>
+                            <h3 className="text-2xl font-bold text-heading mb-6">Account Information</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center space-x-4">
                                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -111,57 +111,78 @@ function Profile({ user }) {
                             </div>
                         </motion.div>
 
-                        {/* Professional Stats */}
+                        {/* Email Stats */}
                         <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
                             className="bg-white rounded-2xl shadow-xl p-8"
                         >
-                            <h3 className="text-2xl font-bold text-heading mb-6">Professional Stats</h3>
+                            <h3 className="text-2xl font-bold text-heading mb-6">Email Activity</h3>
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="text-center">
                                     <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                                        <FaUsers className="text-2xl text-primary" />
+                                        <FaEnvelopeOpen className="text-2xl text-primary" />
                                     </div>
                                     <p className="text-3xl font-bold text-heading mb-1">0</p>
-                                    <p className="text-sm text-body">Connections</p>
+                                    <p className="text-sm text-body">Emails Read</p>
                                 </div>
                                 <div className="text-center">
                                     <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                                        <FaBriefcase className="text-2xl text-primary" />
+                                        <FaRobot className="text-2xl text-primary" />
                                     </div>
                                     <p className="text-3xl font-bold text-heading mb-1">0</p>
-                                    <p className="text-sm text-body">Jobs Applied</p>
+                                    <p className="text-sm text-body">AI Replies</p>
                                 </div>
                                 <div className="text-center">
                                     <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                                        <FaGraduationCap className="text-2xl text-primary" />
+                                        <FaChartLine className="text-2xl text-primary" />
                                     </div>
                                     <p className="text-3xl font-bold text-heading mb-1">0</p>
-                                    <p className="text-sm text-body">Courses</p>
+                                    <p className="text-sm text-body">Categorized</p>
                                 </div>
                                 <div className="text-center">
                                     <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                                        <FaCalendarAlt className="text-2xl text-primary" />
+                                        <FaEnvelope className="text-2xl text-primary" />
                                     </div>
                                     <p className="text-3xl font-bold text-heading mb-1">0</p>
-                                    <p className="text-sm text-body">Events</p>
+                                    <p className="text-sm text-body">Sent</p>
                                 </div>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Recent Activity */}
+                    {/* Quick Actions */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="mt-8 bg-white rounded-2xl shadow-xl p-8"
                     >
-                        <h3 className="text-2xl font-bold text-heading mb-6">Recent Activity</h3>
-                        <div className="text-center py-8">
-                            <p className="text-body">No recent activity to show</p>
+                        <h3 className="text-2xl font-bold text-heading mb-6">Quick Actions</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => window.location.href = '/dashboard'}
+                                className="bg-primary/10 hover:bg-primary/20 text-primary py-4 px-6 rounded-xl font-medium transition-colors"
+                            >
+                                Go to Dashboard
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="bg-primary/10 hover:bg-primary/20 text-primary py-4 px-6 rounded-xl font-medium transition-colors"
+                            >
+                                Email Settings
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="bg-primary/10 hover:bg-primary/20 text-primary py-4 px-6 rounded-xl font-medium transition-colors"
+                            >
+                                View Analytics
+                            </motion.button>
                         </div>
                     </motion.div>
                 </div>

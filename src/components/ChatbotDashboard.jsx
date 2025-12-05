@@ -24,7 +24,7 @@ function ChatbotDashboard() {
       const welcomeMessage = {
         id: Date.now(),
         type: 'system',
-        content: `Hello ${user.name}! 👋\n\nI'm your AI email assistant. Here's what I can help you with:\n\n📧 **"read emails"** - Fetch your 5 most recent emails with AI-generated summaries\n\n✍️ **"generate replies"** - Create AI-powered responses for your emails\n\n📤 **"send reply to email #"** - Send a generated reply (e.g., "send reply to email 1")\n\n🗑️ **"delete email #"** - Delete a specific email (e.g., "delete email 2")\n\n🗑️ **"delete email from [sender]"** - Delete latest email from a sender\n\n🗑️ **"delete email with subject [keyword]"** - Delete email by subject keyword\n\nJust type your command naturally, and I'll handle the rest!`,
+        content: `Hi ${user.name}!\n\n Here's what I can do:\n\nRead & View\n• "read emails" - Show your recent emails\n• "show me emails about [topic]" - Find specific emails\n\nOrganize\n• "categorize my inbox" - Sort emails by type\n• "give me today's digest" - Get a daily summary\n\nReply & Send\n• "generate replies" - Create response drafts\n• "send reply to email 1" - Send a specific reply\n\nDelete\n• "delete email 2" - Remove an email\n• "delete email from [sender]" - Delete by sender\n`,
         timestamp: new Date(),
       };
       setMessages([welcomeMessage]);
@@ -51,38 +51,92 @@ function ChatbotDashboard() {
     setIsLoading(true);
 
     try {
-      const lowerMessage = userMessage.toLowerCase();
+      // Use natural language parsing
+      const token = localStorage.getItem('auth_token');
+      const parseResponse = await fetch(`${import.meta.env.VITE_API_URL}/emails/parse-command`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ command: userMessage }),
+      });
 
-      // Read emails command
-      if (lowerMessage.includes('read') && lowerMessage.includes('email')) {
-        await handleReadEmails();
-      }
-      // Generate replies command
-      else if (lowerMessage.includes('generate') && lowerMessage.includes('repl')) {
-        await handleGenerateReplies();
-      }
-      // Send reply command
-      else if (lowerMessage.includes('send') && lowerMessage.includes('repl')) {
-        const emailMatch = userMessage.match(/email\s*#?(\d+)/i);
-        if (emailMatch) {
-          await handleSendReply(parseInt(emailMatch[1]));
+      if (parseResponse.ok) {
+        const { parsed } = await parseResponse.json();
+        
+        // Execute parsed command
+        if (parsed.confidence > 0.5) {
+          await executeCommand(parsed, userMessage);
         } else {
-          addMessage('Please specify which email to reply to (e.g., "send reply to email 1")', 'system');
+          // Fallback to basic parsing
+          await executeFallbackCommand(userMessage);
         }
-      }
-      // Delete email command
-      else if (lowerMessage.includes('delete')) {
-        await handleDeleteEmail(userMessage);
-      }
-      // Unknown command
-      else {
-        addMessage('I didn\'t understand that command. Try:\n• "read emails"\n• "generate replies"\n• "send reply to email #"\n• "delete email #"', 'system');
+      } else {
+        // Fallback if NLP service fails
+        await executeFallbackCommand(userMessage);
       }
     } catch (error) {
       console.error('Command error:', error);
       addMessage(`Error: ${error.message || 'Something went wrong'}`, 'error');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const executeCommand = async (parsed, originalCommand) => {
+    const { action, parameters } = parsed;
+
+    switch (action) {
+      case 'read_emails':
+        await handleReadEmails(parameters);
+        break;
+      case 'generate_replies':
+        await handleGenerateReplies();
+        break;
+      case 'send_reply':
+        if (parameters.email_id) {
+          await handleSendReply(parameters.email_id);
+        } else {
+          addMessage('Please specify which email to reply to', 'system');
+        }
+        break;
+      case 'delete_email':
+        await handleDeleteEmail(originalCommand, parameters);
+        break;
+      case 'categorize_inbox':
+        await handleCategorizeInbox(parameters.count || 20);
+        break;
+      case 'daily_digest':
+        await handleDailyDigest();
+        break;
+      default:
+        await executeFallbackCommand(originalCommand);
+    }
+  };
+
+  const executeFallbackCommand = async (userMessage) => {
+    const lowerMessage = userMessage.toLowerCase();
+
+    if (lowerMessage.includes('read') || lowerMessage.includes('show') || lowerMessage.includes('fetch')) {
+      await handleReadEmails();
+    } else if (lowerMessage.includes('categor') || lowerMessage.includes('group')) {
+      await handleCategorizeInbox();
+    } else if (lowerMessage.includes('digest')) {
+      await handleDailyDigest();
+    } else if (lowerMessage.includes('generate') && lowerMessage.includes('repl')) {
+      await handleGenerateReplies();
+    } else if (lowerMessage.includes('send') && lowerMessage.includes('repl')) {
+      const emailMatch = userMessage.match(/email\s*#?(\d+)/i);
+      if (emailMatch) {
+        await handleSendReply(parseInt(emailMatch[1]));
+      } else {
+        addMessage('Please specify which email to reply to', 'system');
+      }
+    } else if (lowerMessage.includes('delete')) {
+      await handleDeleteEmail(userMessage);
+    } else {
+      addMessage('I didn\'t understand that. Try:\n• read emails\n• categorize my inbox\n• give me today\'s digest\n• generate replies', 'system');
     }
   };
 
@@ -98,13 +152,13 @@ function ChatbotDashboard() {
       const data = await response.json();
       setEmails(data.emails);
 
-      let emailsText = `📬 **Your 5 Most Recent Emails:**\n\n`;
+      let emailsText = `Your Recent Emails\n\n`;
       data.emails.forEach((email, index) => {
-        emailsText += `**Email #${index + 1}**\n`;
-        emailsText += `📨 From: ${email.sender}\n`;
-        emailsText += `📋 Subject: ${email.subject}\n`;
-        emailsText += `📄 Summary: ${email.summary}\n`;
-        emailsText += `🕐 Date: ${new Date(email.date).toLocaleString()}\n\n`;
+        emailsText += `Email ${index + 1}\n`;
+        emailsText += `From: ${email.sender}\n`;
+        emailsText += `Subject: ${email.subject}\n`;
+        emailsText += `${email.summary}\n`;
+        emailsText += `${new Date(email.date).toLocaleDateString()}\n\n`;
       });
 
       addMessage(emailsText, 'system');
@@ -134,9 +188,9 @@ function ChatbotDashboard() {
 
       const data = await response.json();
 
-      let repliesText = `✍️ **AI-Generated Replies:**\n\n`;
+      let repliesText = `Generated Replies\n\n`;
       data.replies.forEach((reply, index) => {
-        repliesText += `**Reply for Email #${index + 1}** (${emails[index].subject})\n`;
+        repliesText += `Reply ${index + 1}: ${emails[index].subject}\n`;
         repliesText += `${reply}\n\n`;
         repliesText += `Type "send reply to email ${index + 1}" to send this reply.\n\n`;
       });
@@ -184,7 +238,7 @@ function ChatbotDashboard() {
       if (!response.ok) throw new Error('Failed to send reply');
 
       const data = await response.json();
-      addMessage(`✅ Reply sent successfully to ${email.sender}!`, 'system');
+      addMessage(`Reply sent to ${email.sender}`, 'system');
     } catch (error) {
       addMessage(`Failed to send reply: ${error.message}`, 'error');
     }
@@ -225,7 +279,7 @@ function ChatbotDashboard() {
     }
 
     // Ask for confirmation
-    const confirmMessage = `⚠️ Are you sure you want to delete this email? Type "confirm delete" to proceed or anything else to cancel.`;
+    const confirmMessage = `Are you sure you want to delete this email?\nType "confirm delete" to proceed.`;
     addMessage(confirmMessage, 'system');
 
     // Store delete params for confirmation
@@ -247,7 +301,7 @@ function ChatbotDashboard() {
       if (!response.ok) throw new Error('Failed to delete email');
 
       const data = await response.json();
-      addMessage(`✅ Email deleted successfully!`, 'system');
+      addMessage(`Email deleted`, 'system');
 
       // Refresh emails list
       if (emails.length > 0) {
@@ -255,6 +309,73 @@ function ChatbotDashboard() {
       }
     } catch (error) {
       addMessage(`Failed to delete email: ${error.message}`, 'error');
+    }
+  };
+
+  const handleCategorizeInbox = async (count = 20) => {
+    try {
+      addMessage('Categorizing your emails...', 'system');
+      
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/emails/categorize`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ count }),
+      });
+
+      if (!response.ok) throw new Error('Failed to categorize inbox');
+
+      const data = await response.json();
+
+      let categorizedText = `Inbox Categories (${data.total_emails} emails)\n\n`;
+
+      for (const [category, info] of Object.entries(data.categories)) {
+        if (info.count > 0) {
+          categorizedText += `${category} (${info.count})\n`;
+          categorizedText += `${info.summary}\n\n`;
+          
+          // Show first 3 emails from each category
+          const displayEmails = info.emails.slice(0, 3);
+          displayEmails.forEach((email, idx) => {
+            categorizedText += `  ${idx + 1}. From: ${email.sender}\n`;
+            categorizedText += `     Subject: ${email.subject}\n\n`;
+          });
+
+          if (info.emails.length > 3) {
+            categorizedText += `  ...and ${info.emails.length - 3} more\n\n`;
+          }
+        }
+      }
+
+      addMessage(categorizedText, 'system');
+    } catch (error) {
+      addMessage(`Failed to categorize inbox: ${error.message}`, 'error');
+    }
+  };
+
+  const handleDailyDigest = async () => {
+    try {
+      addMessage('Creating your daily digest...', 'system');
+      
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/emails/daily-digest`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) throw new Error('Failed to generate digest');
+
+      const data = await response.json();
+
+      let digestText = `Daily Email Digest\n\n`;
+      digestText += `Total: ${data.email_count} emails\n\n`;
+      digestText += data.digest;
+
+      addMessage(digestText, 'system');
+    } catch (error) {
+      addMessage(`Failed to generate digest: ${error.message}`, 'error');
     }
   };
 
