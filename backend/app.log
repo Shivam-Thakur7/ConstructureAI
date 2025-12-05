@@ -35,3 +35,15 @@
 2025-12-05 21:57:52,944 - logger_service - ERROR - AI Service - daily_digest: Failed - None
 2025-12-05 21:57:52,944 - logger_service - INFO - AI Service - daily_digest: Success
 2025-12-05 21:57:52,944 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com
+2025-12-05 23:57:27,701 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-05 23:59:09,107 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:03:14,436 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:05:10,583 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:05:11,283 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:05:11,889 - google_auth_httplib2 - INFO - Refreshing credentials due to a 401 response. Attempt 1/2.
+2025-12-06 00:06:52,796 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:06:53,594 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:06:55,384 - google_auth_httplib2 - INFO - Refreshing credentials due to a 401 response. Attempt 1/2.
+2025-12-06 00:07:09,748 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:07:19,056 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:07:19,586 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0

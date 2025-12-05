@@ -14,7 +14,16 @@ from typing import Optional
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
 # Store CSRF tokens temporarily (in production, use Redis or similar)
+# Format: {state: timestamp}
 csrf_tokens = {}
+
+def cleanup_old_tokens():
+    """Remove CSRF tokens older than 10 minutes"""
+    from datetime import timedelta
+    cutoff = datetime.utcnow() - timedelta(minutes=10)
+    expired = [state for state, timestamp in csrf_tokens.items() if timestamp < cutoff]
+    for state in expired:
+        del csrf_tokens[state]
 
 # Dependency to get current user from JWT token
 async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
@@ -106,10 +115,23 @@ async def google_callback(code: str = None, state: str = None, error: str = None
                 url=f"{settings.FRONTEND_URL}/?error=missing_code&message=No authorization code received"
             )
         
-        # Verify CSRF token
+        # Clean up old tokens first
+        cleanup_old_tokens()
+        
+        # Verify CSRF token (check if it exists and is not too old)
         if state not in csrf_tokens:
+            print(f"DEBUG: State '{state}' not found in csrf_tokens. Available tokens: {list(csrf_tokens.keys())}")
             return RedirectResponse(
-                url=f"{settings.FRONTEND_URL}/?error=invalid_state&message=Invalid or expired session"
+                url=f"{settings.FRONTEND_URL}/?error=invalid_state&message=Session expired. Please try logging in again."
+            )
+        
+        # Check token age (10 minutes max)
+        from datetime import timedelta
+        token_age = datetime.utcnow() - csrf_tokens[state]
+        if token_age > timedelta(minutes=10):
+            del csrf_tokens[state]
+            return RedirectResponse(
+                url=f"{settings.FRONTEND_URL}/?error=invalid_state&message=Session expired. Please try logging in again."
             )
         
         # Remove used CSRF token

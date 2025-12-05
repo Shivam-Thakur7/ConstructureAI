@@ -37,7 +37,8 @@ Summary:"""
             response = self.model.generate_content(prompt)
             return response.text.strip()
         except Exception as e:
-            return f"Unable to generate summary: {str(e)}"
+            # Return a clean fallback instead of showing the error
+            return email_body[:200] + "..." if len(email_body) > 200 else email_body
     
     @async_wrap
     def generate_reply(self, sender: str, subject: str, body: str, summary: str) -> str:
