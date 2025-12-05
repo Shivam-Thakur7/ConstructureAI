@@ -24,8 +24,8 @@ ConstructureAI is a full-stack web application that integrates Google OAuth, Gma
 
 ## 🚀 Live Demo
 
-**Frontend (Vercel):** `https://constructure-ai-ecru.vercel.app` *(Deploy to get your URL)*  
-**Backend API (Render):** `https://constructure-ai-backend.onrender.com` *(Deploy to get your URL)*
+**Frontend (Vercel):** `https://constructure-ai-ecru.vercel.app` 
+**Backend API (Render):** `https://constructure-ai-backend.onrender.com` 
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step deployment instructions.
 
