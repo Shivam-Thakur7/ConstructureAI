@@ -157,8 +157,12 @@ function ChatbotDashboard() {
         emailsText += `Email ${index + 1}\n`;
         emailsText += `From: ${email.sender}\n`;
         emailsText += `Subject: ${email.subject}\n`;
-        emailsText += `${email.summary}\n`;
-        emailsText += `${new Date(email.date).toLocaleDateString()}\n\n`;
+        emailsText += `Date: ${new Date(email.date).toLocaleDateString()}\n\n`;
+        // Show first 300 characters of body or full body if shorter
+        const bodyPreview = email.body.length > 300 
+          ? email.body.substring(0, 300) + '...' 
+          : email.body;
+        emailsText += `${bodyPreview}\n\n`;
       });
 
       addMessage(emailsText, 'system');

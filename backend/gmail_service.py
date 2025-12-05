@@ -6,6 +6,8 @@ from googleapiclient.errors import HttpError
 from typing import List, Dict, Optional
 import asyncio
 from functools import wraps
+import re
+from html import unescape
 
 
 def async_wrap(func):
@@ -87,21 +89,55 @@ class GmailService:
         except HttpError as error:
             raise Exception(f"Gmail API error: {error}")
     
+    def _strip_html(self, html_content: str) -> str:
+        """Strip HTML tags and return clean text"""
+        if not html_content:
+            return ""
+        
+        # Remove style tags and their content
+        html_content = re.sub(r'<style[^>]*>.*?</style>', '', html_content, flags=re.DOTALL | re.IGNORECASE)
+        # Remove script tags and their content
+        html_content = re.sub(r'<script[^>]*>.*?</script>', '', html_content, flags=re.DOTALL | re.IGNORECASE)
+        # Remove HTML comments
+        html_content = re.sub(r'<!--.*?-->', '', html_content, flags=re.DOTALL)
+        # Remove all HTML tags
+        html_content = re.sub(r'<[^>]+>', '', html_content)
+        # Unescape HTML entities
+        html_content = unescape(html_content)
+        # Remove excessive whitespace
+        html_content = re.sub(r'\s+', ' ', html_content)
+        # Remove leading/trailing whitespace
+        html_content = html_content.strip()
+        
+        return html_content
+    
     def _get_email_body(self, payload) -> str:
         """Extract email body from message payload"""
         body = ""
+        html_body = ""
         
         if 'body' in payload and 'data' in payload['body']:
-            body = base64.urlsafe_b64decode(payload['body']['data']).decode('utf-8')
+            body = base64.urlsafe_b64decode(payload['body']['data']).decode('utf-8', errors='ignore')
         elif 'parts' in payload:
             for part in payload['parts']:
                 if part['mimeType'] == 'text/plain':
                     if 'data' in part['body']:
-                        body = base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
+                        body = base64.urlsafe_b64decode(part['body']['data']).decode('utf-8', errors='ignore')
                         break
-                elif part['mimeType'] == 'text/html' and not body:
+                elif part['mimeType'] == 'text/html':
                     if 'data' in part['body']:
-                        body = base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
+                        html_body = base64.urlsafe_b64decode(part['body']['data']).decode('utf-8', errors='ignore')
+                elif part['mimeType'].startswith('multipart/'):
+                    # Recursively handle nested parts
+                    if 'parts' in part:
+                        nested_body = self._get_email_body(part)
+                        if nested_body and nested_body != "No content available":
+                            body = nested_body
+                            break
+        
+        # If no plain text found, strip HTML from html_body
+        if not body and html_body:
+            body = self._strip_html(html_body)
         
         return body or "No content available"
     

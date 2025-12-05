@@ -47,3 +47,20 @@
 2025-12-06 00:07:09,748 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
 2025-12-06 00:07:19,056 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
 2025-12-06 00:07:19,586 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:09:06,879 - logger_service - INFO - Command - digest: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:09:07,423 - logger_service - ERROR - Command - daily_digest: Failed for shivamthakurpvt@gmail.com - None
+2025-12-06 00:09:07,425 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:09:23,482 - logger_service - ERROR - AI Service - daily_digest: Failed - None
+2025-12-06 00:09:23,483 - logger_service - INFO - AI Service - daily_digest: Success
+2025-12-06 00:09:23,483 - logger_service - INFO - Command - daily_digest: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:10:24,863 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:10:25,478 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:10:42,952 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:10:43,517 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:15:05,350 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:17:11,970 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:20:14,541 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:24:38,145 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:28:20,862 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-12-06 00:28:32,073 - logger_service - INFO - Command - read emails: Success for shivamthakurpvt@gmail.com
+2025-12-06 00:28:32,928 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0

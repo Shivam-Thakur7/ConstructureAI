@@ -50,11 +50,7 @@ async def read_emails(current_user: dict = Depends(get_current_user)):
         emails = await gmail_service.get_recent_emails(max_results=5)
         print(f"DEBUG: Fetched {len(emails)} emails")
         
-        # Generate AI summaries for each email
-        for i, email in enumerate(emails):
-            print(f"DEBUG: Generating summary for email {i+1}...")
-            email["summary"] = await ai_service.generate_summary(email["body"])
-        
+        # No summarization - return emails as-is with full body content
         print("DEBUG: Successfully completed")
         return {"emails": emails}
     except Exception as e:
