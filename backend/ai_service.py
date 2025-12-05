@@ -19,7 +19,8 @@ class AIService:
     def __init__(self):
         # Configure Gemini AI
         genai.configure(api_key=settings.GEMINI_API_KEY)
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+        # Use gemini-pro which is stable and widely available
+        self.model = genai.GenerativeModel('gemini-pro')
     
     @async_wrap
     def generate_summary(self, email_body: str) -> str:
