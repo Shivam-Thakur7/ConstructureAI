@@ -26,11 +26,12 @@ def verify_token(token: str) -> Optional[TokenData]:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         email: str = payload.get("email")
         sub: str = payload.get("sub")
+        access_token: str = payload.get("access_token")
         
         if email is None:
             return None
         
-        return TokenData(email=email, sub=sub)
+        return TokenData(email=email, sub=sub, access_token=access_token)
     except JWTError:
         return None
 

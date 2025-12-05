@@ -14,6 +14,7 @@ import Services from './components/Services';
 import Stakeholders from './components/Stakeholders';
 import { motion, AnimatePresence } from 'framer-motion';
 import TutorialSlides from './components/TutorialSlides';
+import ChatbotDashboard from './components/ChatbotDashboard';
 
 function ProtectedRoute({ children }) {
 	const { isAuthenticated, loading } = useAuth();
@@ -54,6 +55,11 @@ function MainContent() {
 				} />
 				<Route path="/signin" element={<SignIn />} />
 				<Route path="/auth/success" element={<AuthSuccess />} />
+				<Route path="/dashboard" element={
+					<ProtectedRoute>
+						<ChatbotDashboard />
+					</ProtectedRoute>
+				} />
 				<Route path="/profile" element={
 					<ProtectedRoute>
 						<Profile user={user} />

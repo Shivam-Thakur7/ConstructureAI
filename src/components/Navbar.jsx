@@ -41,6 +41,7 @@ function Navbar({ user, onSignOut }) {
     { name: 'Contact', path: '/#contact' },
     ...(user
       ? [
+          { name: 'Dashboard', path: '/dashboard' },
           { name: user.name, icon: <FaUser />, path: '/profile' },
           { name: 'Sign Out', icon: <FaSignOutAlt />, onClick: onSignOut },
         ]

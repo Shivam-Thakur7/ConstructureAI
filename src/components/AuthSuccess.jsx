@@ -45,8 +45,8 @@ function AuthSuccess() {
         setStatus('success');
         setMessage('Sign in successful! Redirecting to dashboard...');
         
-        // Redirect to home/dashboard after success
-        setTimeout(() => navigate('/'), 1500);
+        // Redirect to dashboard after success
+        setTimeout(() => navigate('/dashboard'), 1500);
       } catch (err) {
         console.error('Auth success error:', err);
         setStatus('error');

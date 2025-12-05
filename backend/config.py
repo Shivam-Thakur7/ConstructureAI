@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     # Environment
     ENVIRONMENT: str = "development"
     
+    # Gemini AI
+    GEMINI_API_KEY: str = ""
+    
     # Google OAuth Scopes
     GOOGLE_SCOPES: list = [
         "openid",

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request, Depends
+from fastapi import APIRouter, HTTPException, Request, Depends, Header
 from fastapi.responses import RedirectResponse, JSONResponse
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
@@ -9,11 +9,30 @@ from auth_utils import create_access_token, verify_token, serialize_credentials
 from database import db
 from datetime import datetime
 import secrets
+from typing import Optional
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
 # Store CSRF tokens temporarily (in production, use Redis or similar)
 csrf_tokens = {}
+
+# Dependency to get current user from JWT token
+async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
+    """Extract user data from JWT token"""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.split(" ")[1]
+    token_data = verify_token(token)
+    
+    if not token_data:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    
+    return {
+        "user_id": token_data.sub,
+        "email": token_data.email,
+        "access_token": getattr(token_data, 'access_token', None)
+    }
 
 def create_oauth_flow():
     """Create Google OAuth flow"""
@@ -123,9 +142,13 @@ async def google_callback(code: str = None, state: str = None, error: str = None
             google_credentials=google_creds
         )
         
-        # Create JWT token
+        # Create JWT token with Google access token for Gmail API
         access_token = create_access_token(
-            data={"sub": user_id, "email": email}
+            data={
+                "sub": user_id,
+                "email": email,
+                "access_token": credentials.token  # Store Google access token
+            }
         )
         
         # Save session
@@ -152,7 +175,7 @@ async def google_callback(code: str = None, state: str = None, error: str = None
         )
 
 @router.get("/me")
-async def get_current_user(request: Request):
+async def get_user_profile(request: Request):
     """
     Get currently authenticated user
     Requires valid JWT token in Authorization header

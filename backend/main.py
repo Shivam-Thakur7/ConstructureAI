@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
 from auth_routes import router as auth_router
+from email_routes import router as email_router
 
 # Create FastAPI app
 app = FastAPI(
@@ -35,6 +36,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(auth_router)
+app.include_router(email_router)
 
 @app.get("/")
 async def root():

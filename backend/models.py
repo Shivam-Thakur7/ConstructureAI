@@ -18,6 +18,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
     sub: Optional[str] = None
+    access_token: Optional[str] = None
 
 class GoogleTokens(BaseModel):
     access_token: str
