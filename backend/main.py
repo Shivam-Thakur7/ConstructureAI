@@ -11,9 +11,23 @@ app = FastAPI(
 )
 
 # Configure CORS
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+]
+
+# Add production frontend URL if set
+if settings.FRONTEND_URL:
+    allowed_origins.append(settings.FRONTEND_URL)
+    # Also allow all Vercel preview deployments
+    if "vercel.app" in settings.FRONTEND_URL:
+        base_domain = settings.FRONTEND_URL.split("https://")[1].split(".")[0]
+        allowed_origins.append(f"https://{base_domain}-*.vercel.app")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL, "http://localhost:5173", "http://localhost:5174"],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
