@@ -394,6 +394,18 @@ python -m pytest tests/test_email_system.py --cov=. --cov-report=html
 9. **Session Management**: In-memory session storage (resets on server restart)
 10. **Email Deletion**: Permanent delete (no trash/undo functionality)
 
+### Future Improvements
+- [ ] Database integration (PostgreSQL/MongoDB)
+- [ ] WebSocket for real-time updates
+- [ ] Email attachment handling
+- [ ] Multi-language support
+- [ ] Advanced search and filtering
+- [ ] Email threading and conversation view
+- [ ] Calendar integration
+- [ ] Scheduled email sending
+- [ ] Custom categorization rules
+- [ ] Email templates library
+
 ## 📄 Project Structure
 
 ```
@@ -427,3 +439,35 @@ ConstructureAI/
 └── README.md                     # This file
 ```
 
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+For issues or questions:
+- GitHub Issues: [Create an issue](https://github.com/Shivam-Thakur7/ConstructureAI/issues)
+- Email: shivamthakurpvt@gmail.com
+
+## 📜 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Google Gmail API for email access
+- Google Gemini AI for natural language processing
+- FastAPI community for excellent documentation
+- React and Vite teams for modern development tools
+
+---
+
+**Built with ❤️ by Shivam Thakur**
+
+*Last Updated: December 5, 2025*
