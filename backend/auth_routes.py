@@ -132,14 +132,20 @@ async def google_callback(code: str = None, state: str = None, error: str = None
         })
         
         # Redirect to frontend with token
+        redirect_url = f"{settings.FRONTEND_URL}/auth/success?token={access_token}"
+        print(f"Redirecting to: {redirect_url}")
         return RedirectResponse(
-            url=f"{settings.FRONTEND_URL}/auth/success?token={access_token}"
+            url=redirect_url,
+            status_code=302
         )
     
     except Exception as e:
         print(f"Callback error: {str(e)}")
+        error_url = f"{settings.FRONTEND_URL}/?error=auth_failed&message=Authentication failed. Please try again."
+        print(f"Redirecting to error: {error_url}")
         return RedirectResponse(
-            url=f"{settings.FRONTEND_URL}/?error=auth_failed&message=Authentication failed. Please try again."
+            url=error_url,
+            status_code=302
         )
 
 @router.get("/me")
