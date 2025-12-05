@@ -17,16 +17,24 @@ class AuthService {
 
   async getCurrentUser() {
     try {
+      console.log('authService: getCurrentUser called');
+      console.log('authService: API_URL:', API_URL);
+      
       const token = localStorage.getItem('auth_token');
+      console.log('authService: Token from storage:', token ? 'exists' : 'missing');
+      
       if (!token) {
         throw new Error('No auth token');
       }
 
+      console.log('authService: Fetching user from:', `${API_URL}/auth/me`);
       const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
+      
+      console.log('authService: Response status:', response.status);
 
       if (!response.ok) {
         if (response.status === 401) {

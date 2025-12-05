@@ -62,10 +62,18 @@ export const AuthProvider = ({ children }) => {
 
   const handleAuthSuccess = async (token) => {
     try {
+      console.log('AuthContext: handleAuthSuccess called');
+      console.log('AuthContext: Saving token to localStorage');
       localStorage.setItem('auth_token', token);
+      
+      console.log('AuthContext: Fetching user data');
       const userData = await authService.getCurrentUser();
+      console.log('AuthContext: User data received:', userData);
+      
       setUser(userData);
+      console.log('AuthContext: User state updated');
     } catch (err) {
+      console.error('AuthContext: handleAuthSuccess error:', err);
       setError(err.message || 'Failed to get user data');
       throw err;
     }

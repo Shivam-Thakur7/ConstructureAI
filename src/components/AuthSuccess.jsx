@@ -12,10 +12,16 @@ function AuthSuccess() {
   useEffect(() => {
     const processAuth = async () => {
       try {
+        console.log('AuthSuccess: Processing authentication');
+        console.log('AuthSuccess: Current URL:', window.location.href);
+        
         // Get token from URL
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
         const error = params.get('error');
+        
+        console.log('AuthSuccess: Token found:', !!token);
+        console.log('AuthSuccess: Error found:', error);
 
         if (error) {
           setStatus('error');
@@ -32,7 +38,9 @@ function AuthSuccess() {
         }
 
         // Save token and get user data
+        console.log('AuthSuccess: Calling handleAuthSuccess with token');
         await handleAuthSuccess(token);
+        console.log('AuthSuccess: handleAuthSuccess completed successfully');
         
         setStatus('success');
         setMessage('Sign in successful! Redirecting to dashboard...');
