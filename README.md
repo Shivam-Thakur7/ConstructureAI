@@ -394,18 +394,6 @@ python -m pytest tests/test_email_system.py --cov=. --cov-report=html
 9. **Session Management**: In-memory session storage (resets on server restart)
 10. **Email Deletion**: Permanent delete (no trash/undo functionality)
 
-### Future Improvements
-- [ ] Database integration (PostgreSQL/MongoDB)
-- [ ] WebSocket for real-time updates
-- [ ] Email attachment handling
-- [ ] Multi-language support
-- [ ] Advanced search and filtering
-- [ ] Email threading and conversation view
-- [ ] Calendar integration
-- [ ] Scheduled email sending
-- [ ] Custom categorization rules
-- [ ] Email templates library
-
 ## 📄 Project Structure
 
 ```
